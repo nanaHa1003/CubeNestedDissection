@@ -6,9 +6,9 @@ class Coordinate
   attr_accessor :y
   attr_accessor :z
   def initialize(x, y, z)
-    @x = x;
-    @y = y;
-    @z = z;
+    @x = x
+    @y = y
+    @z = z
   end
 end
 
@@ -20,10 +20,10 @@ class Domain
   attr_reader :volume
   def initialize(x_size, y_size, z_size)
     @origin = Coordinate.new(0, 0, 0)
-    @x_size = x_size;
-    @y_size = y_size;
-    @z_size = z_size;
-    @volume = x_size * y_size * z_size;
+    @x_size = x_size
+    @y_size = y_size
+    @z_size = z_size
+    @volume = x_size * y_size * z_size
   end
 
   def each
@@ -40,7 +40,7 @@ end
 class Subdomain < Domain
   def initialize(x_size, y_size, z_size, x, y, z)
     super(x_size, y_size, z_size)
-    @origin = Coordinate.new(x, y, z);
+    @origin = Coordinate.new(x, y, z)
   end
 end
 
@@ -82,6 +82,8 @@ def bipart(domain)
       sp = Separator.new(domain.x_size, domain.y_size, 1 , o.x, o.y, o.z + lz    )
       rd = Subdomain.new(domain.x_size, domain.y_size, rz, o.x, o.y, o.z + lz + 1)
       return ld ,rd, sp
+    else
+      return nil, nil, domain
     end
   end
   return nil, nil, domain
@@ -201,8 +203,13 @@ if x_size * y_size * z_size > 0
 
   # Write partition sizes into perm_file
   File.open(part_file, 'w') { |file|
-    sizes.each do |i|
-      file.write("#{i}\n")
+    ptr = 0
+    file.write("#{ptr}\n")
+    depth.downto 0 do |level|
+      (2 ** level - 1).upto (2 ** (level + 1) - 2) do |i|
+        ptr = ptr + sizes[i]
+        file.write("#{ptr}\n")
+      end
     end
   }
 end

@@ -1,8 +1,8 @@
 {
-  "x": 31,
-  "y": 31,
-  "z": 31,
-  "depth": 4,
+  "x": 255,
+  "y": 255,
+  "z": 255,
+  "depth": 9,
   "perm_file": "perm.list",
   "part_file": "part.list"
 }
